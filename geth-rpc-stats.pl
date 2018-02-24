@@ -38,8 +38,19 @@ sub geth_rpc {
 
 say 'BlockNumber: ' . hex geth_rpc('eth_blockNumber', []);
 say 'PeerCount: ' . hex geth_rpc('net_peerCount', []);
-say 'Syncing: ' . $json->pretty->encode( geth_rpc('eth_syncing', []) );
 
+# syncing data
+my $syncing = geth_rpc('eth_syncing', []);
+say 'Syncing: ' . $json->pretty->encode($syncing);
+if ($syncing) {
+	my $currentBlock = hex $syncing->{currentBlock};
+	say "Current block: $currentBlock";
+	my $highestBlock = hex $syncing->{highestBlock};
+	say "Highest block: $highestBlock";
+	printf "Sync delta: %i\n", $highestBlock - $currentBlock;
+}
+
+# account data
 my $eth_accounts = geth_rpc('eth_accounts', []);
 say 'Accounts: ' . $json->pretty->encode( $eth_accounts );
 
