@@ -33,6 +33,7 @@ sub geth_rpc {
 	}
 	else {
 		warn Dumper($response);
+		die "No success with geth RPC\n";
 	}
 }
 
